@@ -7,8 +7,8 @@ const port = config.port || process.env.PORT || 5000;
 
 const main = async () => {
   try {
-    // await connectDB();
-    console.log(`Database connected state verified.`);
+    await connectDB();
+     console.log("✅ MongoDB connected");
 
     app.listen(port, () => {
       console.log(`App listening on port ${port}`);

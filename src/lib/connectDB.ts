@@ -10,7 +10,7 @@ export default async function connectDB() {
       dbName: "Docter-Tracker",
     });
     isConnected = true;
-    console.log("✅ MongoDB connected");
+  
   } catch (error) {
     console.error("❌ DB connection error", error);
     throw error;
