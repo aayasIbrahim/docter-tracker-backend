@@ -7,3 +7,4 @@ export interface TUser {
   password: string;
   role?: "ADMIN";
 }
+export type Role = "ADMIN" |"DOCTOR";

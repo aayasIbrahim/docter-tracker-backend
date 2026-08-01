@@ -25,6 +25,15 @@ const registerUserIntoDB = async (payload: TUser) => {
 
   return userWithoutPassword;
 };
-export const userSevice = {
+
+const getMyProfileIntoDB = async (userId: string) => {
+  const user = await User.findOne({ _id: userId } as any);
+  const { password: _, ...userWithoutPassword } = user.toObject();
+  console.log(userWithoutPassword);
+
+  return userWithoutPassword;
+};
+export const userService = {
   registerUserIntoDB,
+  getMyProfileIntoDB,
 };
