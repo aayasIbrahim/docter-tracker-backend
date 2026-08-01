@@ -6,6 +6,7 @@ import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { userRoutes } from "./modules/user/user.route";
 import { authroutes } from "./modules/auth/auh.route";
+import { doctorRoutes } from "./modules/doctor/doctor.route";
 
 const app: Application = express();
 app.use(
@@ -26,6 +27,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authroutes);
+app.use("/api/doctors", doctorRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 export default app;
