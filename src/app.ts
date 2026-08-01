@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParse from "cookie-parser";
 import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
+import { userRoutes } from "./modules/user/user.route";
 
 const app: Application = express();
 app.use(
@@ -22,6 +23,7 @@ app.get("/", (req: Request, res: Response) => {
     author: "Ayas Ibrahim",
   });
 });
+app.use("/api/user", userRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 export default app;
