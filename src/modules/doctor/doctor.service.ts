@@ -1,6 +1,7 @@
 import * as mongoose from "mongoose";
 import { IDoctor, IDoctorQuery } from "./doctor.interface";
 import Doctor from "./doctor.model";
+import { doctorController } from "./doctor.controller";
 
 const createDoctorIntoDB = async (payload: IDoctor) => {
   const { name, specialization, hospital, phone, email } = payload;
@@ -55,7 +56,27 @@ const getAllDoctorFromDB = async (q: IDoctorQuery) => {
     },
   };
 };
+const getSingleDoctorFromDB = async (doctorId: string) => {
+  const doctor = await Doctor.findOne({ _id: doctorId } as any);
+  if (!doctor) {
+    throw new Error("Doctor not found");
+  }
+  return doctor;
+};
+const updateDoctorIntoDB = async (doctorId: string, updateBody: any) => {
+  const updatedDoctor = await Doctor.findOneAndUpdate(
+    { _id: doctorId } as any, 
+    updateBody,
+    {
+      new: true,
+      runValidators: true,
+    } as any
+  );
+  return updatedDoctor;
+};
 export const doctorService = {
   createDoctorIntoDB,
   getAllDoctorFromDB,
+  getSingleDoctorFromDB,
+  updateDoctorIntoDB,
 };

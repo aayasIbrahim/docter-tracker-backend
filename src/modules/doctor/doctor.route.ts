@@ -5,4 +5,6 @@ import { auth } from "../../middleware/auth";
 const router = Router();
 router.post("/", auth("ADMIN"), doctorController.createDoctor);
 router.get("/", auth("ADMIN"), doctorController.getAllDoctor);
+router.get("/:id", auth("ADMIN"), doctorController.getSingleDoctor);
+router.put("/:id", auth("ADMIN"), doctorController.updateDoctor);
 export const doctorRoutes = router;

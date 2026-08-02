@@ -19,12 +19,38 @@ const getAllDoctor = catchAsync(async (req: Request, res: Response) => {
   const result = await doctorService.getAllDoctorFromDB(q);
   sendResponse(res, {
     success: true,
-    statusCode: httpStatus.CREATED,
+    statusCode: httpStatus.OK,
     message: "Doctor Retrival successfully",
+    data: result,
+  });
+});
+const getSingleDoctor = catchAsync(async (req: Request, res: Response) => {
+  const doctorId = req.params.id;
+  const result = await doctorService.getSingleDoctorFromDB(doctorId as string);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Doctor Retrived  Successfully",
+    data: result,
+  });
+});
+const updateDoctor = catchAsync(async (req: Request, res: Response) => {
+  const updateBody = req.body;
+  const doctorId = req.params.id;
+  const result = await doctorService.updateDoctorIntoDB(
+    doctorId as string,
+    updateBody,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Doctor Upddate  Successfully",
     data: result,
   });
 });
 export const doctorController = {
   createDoctor,
   getAllDoctor,
+  getSingleDoctor,
+  updateDoctor,
 };
