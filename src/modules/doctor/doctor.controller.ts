@@ -21,11 +21,12 @@ const getAllDoctor = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: httpStatus.OK,
     message: "Doctor Retrival successfully",
-    data: result,
+    data: result.data,
+    meta: result.meta,
   });
 });
 const getSingleDoctor = catchAsync(async (req: Request, res: Response) => {
-  const doctorId = req.params.id;
+  const { id: doctorId } = req.params;
   if (!doctorId) {
     throw new Error("Doctor Id Required In Params");
   }
@@ -38,14 +39,14 @@ const getSingleDoctor = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const updateDoctor = catchAsync(async (req: Request, res: Response) => {
-  const updateBody = req.body;
-  const doctorId = req.params.id;
+  const payload = req.body;
+  const { id: doctorId } = req.params;
   if (!doctorId) {
     throw new Error("Doctor Id Required In Params");
   }
   const result = await doctorService.updateDoctorIntoDB(
     doctorId as string,
-    updateBody,
+    payload,
   );
   sendResponse(res, {
     success: true,
@@ -55,7 +56,7 @@ const updateDoctor = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const deleteDoctor = catchAsync(async (req: Request, res: Response) => {
-  const doctorId = req.params.id;
+  const { id: doctorId } = req.params;
   if (!doctorId) {
     throw new Error("Doctor Id Required In Params");
   }

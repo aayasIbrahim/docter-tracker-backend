@@ -65,18 +65,34 @@ const getSingleDoctorFromDB = async (doctorId: string) => {
   }
   return doctor;
 };
-const updateDoctorIntoDB = async (doctorId: string, updateBody: any) => {
+const updateDoctorIntoDB = async (
+  doctorId: string,
+  payload: Partial<IDoctor>,
+) => {
+  const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
+
+  if (!isDoctorExist) {
+   throw new Error(" Doctor Not found! ");
+  }
   const updatedDoctor = await Doctor.findOneAndUpdate(
     { _id: doctorId } as any,
-    updateBody,
+    { $set: payload },
     {
       new: true,
       runValidators: true,
     } as any,
   );
+  console.log({
+    updatedDoctor,
+  });
   return updatedDoctor;
 };
 const deleteDoctorIntoDB = async (doctorId: string) => {
+  const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
+
+  if (!isDoctorExist) {
+    throw new Error(" Doctor Not found! ");
+  }
   const deleteDoctor = await Doctor.findOneAndDelete({ _id: doctorId } as any);
   return deleteDoctor;
 };
@@ -86,7 +102,7 @@ const addPatientUnderDoctor = async (
   payload: Omit<IPatient, "doctorId">,
 ) => {
   const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
-  console.log(isDoctorExist);
+  
   if (!isDoctorExist) {
     throw new Error("Doctor not found with the provided ID!");
   }
@@ -94,9 +110,12 @@ const addPatientUnderDoctor = async (
     ...payload,
     doctorId: doctorId,
   });
+  if (!newPatient) {
+    throw new Error("Failed to create and assign patient under the doctor.");
+  }
   const populatedPatient = await newPatient.populate({
     path: "doctorId",
-    select: "name specialization hospital email",
+   select: "name specialization hospital email ",
   });
 
   return populatedPatient;

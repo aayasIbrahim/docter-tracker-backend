@@ -10,3 +10,13 @@ export interface IPatient {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface IPatientQuery {
+  searchTerm?: string;
+  gender?: 'Male' | 'Female' | 'Other';
+  doctorId?: string;
+  page?: string;
+  limit?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
