@@ -8,6 +8,7 @@ import { userRoutes } from "./modules/user/user.route";
 import { authroutes } from "./modules/auth/auh.route";
 import { doctorRoutes } from "./modules/doctor/doctor.route";
 import { patientRoutes } from "./modules/patient/patients.route";
+import { statsRoutes } from "./modules/stats/stats.route";
 
 const app: Application = express();
 app.use(
@@ -26,10 +27,11 @@ app.get("/", (req: Request, res: Response) => {
     author: "Ayas Ibrahim",
   });
 });
-app.use("/api/user", userRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/auth", authroutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/patients", patientRoutes);
+app.use("/api/stats", statsRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 export default app;
