@@ -86,6 +86,7 @@ const addPatientUnderDoctor = async (
   payload: Omit<IPatient, "doctorId">,
 ) => {
   const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
+  console.log(isDoctorExist);
   if (!isDoctorExist) {
     throw new Error("Doctor not found with the provided ID!");
   }
@@ -109,10 +110,10 @@ const getDoctorPatientsIntoDB = async (doctorId: string) => {
 
   const patients = await patientModel
     .find({ doctorId: doctorId } as any)
-    .populate({
-      path: "doctorId",
-      select: "name specialization hospital email phone",
-    })
+    // .populate({
+    //   path: "doctorId",
+    //   select: "name specialization hospital email phone",
+    // })
     .sort({ createdAt: -1 });
 
   return {
