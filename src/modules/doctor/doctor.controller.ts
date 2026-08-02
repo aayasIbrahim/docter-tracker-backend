@@ -68,10 +68,48 @@ const deleteDoctor = catchAsync(async (req: Request, res: Response) => {
     data: null,
   });
 });
+
+const getDoctorPatients = catchAsync(async (req: Request, res: Response) => {
+  const { id: doctorId } = req.params;
+  if (!doctorId) {
+    throw new Error("Doctor Id Required In Params");
+  }
+  const result = await doctorService.getDoctorPatientsIntoDB(
+    doctorId as string,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Patients retrieved successfully for the specified doctor!",
+    data: result,
+  });
+});
+const addPatientUnderDoctor = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id: doctorId } = req.params;
+    if (!doctorId) {
+      throw new Error("Doctor Id Required In Params");
+    }
+    const patientData = req.body;
+    const result = await doctorService.addPatientUnderDoctor(
+      doctorId as string,
+      patientData,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
+      message: "Patient successfully assigned under the doctor!",
+      data: result,
+    });
+  },
+);
 export const doctorController = {
   createDoctor,
   getAllDoctor,
   getSingleDoctor,
   updateDoctor,
   deleteDoctor,
+  getDoctorPatients,
+  addPatientUnderDoctor,
 };
