@@ -2,6 +2,8 @@ import * as mongoose from "mongoose";
 import { IDoctor, IDoctorQuery } from "./doctor.interface";
 import Doctor from "./doctor.model";
 import { doctorController } from "./doctor.controller";
+import { IPatient } from "../patient/patient.interface";
+import patientModel from "../patient/patient.model";
 
 const createDoctorIntoDB = async (payload: IDoctor) => {
   const { name, specialization, hospital, phone, email } = payload;
@@ -78,10 +80,58 @@ const deleteDoctorIntoDB = async (doctorId: string) => {
   const deleteDoctor = await Doctor.findOneAndDelete({ _id: doctorId } as any);
   return deleteDoctor;
 };
+
+const addPatientUnderDoctor = async (
+  doctorId: string,
+  payload: Omit<IPatient, "doctorId">,
+) => {
+  const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
+  if (!isDoctorExist) {
+    throw new Error("Doctor not found with the provided ID!");
+  }
+  const newPatient = await patientModel.create({
+    ...payload,
+    doctorId: doctorId,
+  });
+  const populatedPatient = await newPatient.populate({
+    path: "doctorId",
+    select: "name specialization hospital email",
+  });
+
+  return populatedPatient;
+};
+
+const getDoctorPatientsIntoDB = async (doctorId: string) => {
+  const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
+  if (!isDoctorExist) {
+    throw new Error("Doctor not found with the provided ID!");
+  }
+
+  const patients = await patientModel
+    .find({ doctorId: doctorId } as any)
+    .populate({
+      path: "doctorId",
+      select: "name specialization hospital email phone",
+    })
+    .sort({ createdAt: -1 });
+
+  return {
+    doctor: {
+      id: isDoctorExist._id,
+      name: isDoctorExist.name,
+      specialization: isDoctorExist.specialization,
+      hospital: isDoctorExist.hospital,
+    },
+    totalPatients: patients.length,
+    patients: patients,
+  };
+};
 export const doctorService = {
   createDoctorIntoDB,
   getAllDoctorFromDB,
   getSingleDoctorFromDB,
   updateDoctorIntoDB,
   deleteDoctorIntoDB,
+  getDoctorPatientsIntoDB,
+  addPatientUnderDoctor,
 };

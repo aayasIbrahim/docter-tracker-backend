@@ -8,4 +8,8 @@ router.get("/", auth("ADMIN"), doctorController.getAllDoctor);
 router.get("/:id", auth("ADMIN"), doctorController.getSingleDoctor);
 router.put("/:id", auth("ADMIN"), doctorController.updateDoctor);
 router.delete("/:id", auth("ADMIN"), doctorController.deleteDoctor);
+
+//Doctor-Patient Nested Routes
+router.get("/:id/patients", auth("ADMIN"), doctorController.getDoctorPatients);
+router.post("/:id/patients", auth("ADMIN"), doctorController.addPatientUnderDoctor);
 export const doctorRoutes = router;

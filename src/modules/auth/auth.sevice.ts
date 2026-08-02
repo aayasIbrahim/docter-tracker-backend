@@ -1,15 +1,17 @@
-import { TLoginPaylad } from "./auth.interface";
 import User from "../user/user.model";
 import bcrypt from "bcrypt";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
 import { JwtPayload, SignOptions } from "jsonwebtoken";
 
-const loginUserIntoDB = async (payload: TLoginPaylad) => {
+const loginUserIntoDB = async (payload: {
+  email: string;
+  password: string;
+}) => {
   const { email, password } = payload;
 
   const user = await User.findOne({ email } as any);
-console.log(user)
+  console.log(user);
   if (!user) {
     throw new Error("User doest not exits");
   }
@@ -48,10 +50,9 @@ const refreshToken = async (refreshToken: string) => {
   if (!verifiedToken.success) {
     throw new Error(verifiedToken.error);
   }
-  const {email} = verifiedToken.data as JwtPayload;
-  
-  const user = await User.findOne({ email} as any );
-  
+  const { email } = verifiedToken.data as JwtPayload;
+
+  const user = await User.findOne({ email } as any);
 
   const jwtPayload = {
     id: user._id,
