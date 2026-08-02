@@ -65,18 +65,23 @@ const getSingleDoctorFromDB = async (doctorId: string) => {
 };
 const updateDoctorIntoDB = async (doctorId: string, updateBody: any) => {
   const updatedDoctor = await Doctor.findOneAndUpdate(
-    { _id: doctorId } as any, 
+    { _id: doctorId } as any,
     updateBody,
     {
       new: true,
       runValidators: true,
-    } as any
+    } as any,
   );
   return updatedDoctor;
+};
+const deleteDoctorIntoDB = async (doctorId: string) => {
+  const deleteDoctor = await Doctor.findOneAndDelete({ _id: doctorId } as any);
+  return deleteDoctor;
 };
 export const doctorService = {
   createDoctorIntoDB,
   getAllDoctorFromDB,
   getSingleDoctorFromDB,
   updateDoctorIntoDB,
+  deleteDoctorIntoDB,
 };

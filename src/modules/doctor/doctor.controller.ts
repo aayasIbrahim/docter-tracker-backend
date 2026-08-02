@@ -26,6 +26,9 @@ const getAllDoctor = catchAsync(async (req: Request, res: Response) => {
 });
 const getSingleDoctor = catchAsync(async (req: Request, res: Response) => {
   const doctorId = req.params.id;
+  if (!doctorId) {
+    throw new Error("Doctor Id Required In Params");
+  }
   const result = await doctorService.getSingleDoctorFromDB(doctorId as string);
   sendResponse(res, {
     success: true,
@@ -37,6 +40,9 @@ const getSingleDoctor = catchAsync(async (req: Request, res: Response) => {
 const updateDoctor = catchAsync(async (req: Request, res: Response) => {
   const updateBody = req.body;
   const doctorId = req.params.id;
+  if (!doctorId) {
+    throw new Error("Doctor Id Required In Params");
+  }
   const result = await doctorService.updateDoctorIntoDB(
     doctorId as string,
     updateBody,
@@ -48,9 +54,24 @@ const updateDoctor = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const deleteDoctor = catchAsync(async (req: Request, res: Response) => {
+  const doctorId = req.params.id;
+  if (!doctorId) {
+    throw new Error("Doctor Id Required In Params");
+  }
+  await doctorService.deleteDoctorIntoDB(doctorId as string);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Doctor Delete  Successfully",
+    data: null,
+  });
+});
 export const doctorController = {
   createDoctor,
   getAllDoctor,
   getSingleDoctor,
   updateDoctor,
+  deleteDoctor,
 };
