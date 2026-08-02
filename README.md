@@ -7,7 +7,7 @@ A robust, scalable, and fully typed RESTful API backend for managing doctors, pa
 ## 🚀 Live Demo & API Documentation
 
 - **Base URL:** `https://your-api-domain.com/api/v1`
-- **Postman Collection:** [Download / View Collection](https://github.com/aayasIbrahim/docter-tracker-backend.git)
+- **Postman Collection:** [Download / View Collection](https://github.com/aayasIbrahim/docter-tracker-backend/blob/master/postman/Docter%20app.postman_collection.json)
 
 ---
 
@@ -37,38 +37,40 @@ A robust, scalable, and fully typed RESTful API backend for managing doctors, pa
 
 Test the endpoints using the following pre-configured user credentials:
 
-| Role | Email | Password | Access Rights |
-| :--- | :--- | :--- | :--- |
-| **System Admin** | `admin1@gmail.com` | `12345` | Full Access (CRUD Doctors/Patients, Stats) |
-
+| Role             | Email              | Password | Access Rights                              |
+| :--------------- | :----------------- | :------- | :----------------------------------------- |
+| **System Admin** | `admin1@gmail.com` | `12345`  | Full Access (CRUD Doctors/Patients, Stats) |
 
 ---
 
 ## 📌 API Endpoints Summary
 
 ### 👨‍⚕️ Doctor Routes (`/api/doctors`)
-| Method | Endpoint | Description | Access |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/` | Create a new doctor | `ADMIN` |
-| `GET` | `/` | Get all doctors (Search, Filter, Pagination) | `ADMIN` |
-| `GET` | `/:id` | Get single doctor details | `ADMIN` |
-| `PUT` | `/:id` | Update doctor details | `ADMIN` |
-| `DELETE` | `/:id` | Delete a doctor | `ADMIN` |
-| `GET` | `/:id/patients` | Get all patients under a specific doctor | `ADMIN` |
-| `POST` | `/:id/patients` | Assign a new patient under a specific doctor | `ADMIN` |
+
+| Method   | Endpoint        | Description                                  | Access  |
+| :------- | :-------------- | :------------------------------------------- | :------ |
+| `POST`   | `/`             | Create a new doctor                          | `ADMIN` |
+| `GET`    | `/`             | Get all doctors (Search, Filter, Pagination) | `ADMIN` |
+| `GET`    | `/:id`          | Get single doctor details                    | `ADMIN` |
+| `PUT`    | `/:id`          | Update doctor details                        | `ADMIN` |
+| `DELETE` | `/:id`          | Delete a doctor                              | `ADMIN` |
+| `GET`    | `/:id/patients` | Get all patients under a specific doctor     | `ADMIN` |
+| `POST`   | `/:id/patients` | Assign a new patient under a specific doctor | `ADMIN` |
 
 ### 🩺 Patient Routes (`/api/patients`)
-| Method | Endpoint | Description | Access |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/` | Get all patients | `ADMIN` |
-| `GET` | `/:id` | Get single patient details | `ADMIN` |
-| `PUT` | `/:id` | Update patient record | `ADMIN` |
-| `DELETE` | `/:id` | Delete/Discharge patient | `ADMIN` |
+
+| Method   | Endpoint | Description                | Access  |
+| :------- | :------- | :------------------------- | :------ |
+| `GET`    | `/`      | Get all patients           | `ADMIN` |
+| `GET`    | `/:id`   | Get single patient details | `ADMIN` |
+| `PUT`    | `/:id`   | Update patient record      | `ADMIN` |
+| `DELETE` | `/:id`   | Delete/Discharge patient   | `ADMIN` |
 
 ### 📊 Analytics & Stats Routes (`/api/stats`)
-| Method | Endpoint | Description | Access |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/dashboard` | Retrieve chart data & summary stats for Admin UI | `ADMIN` |
+
+| Method | Endpoint     | Description                                      | Access  |
+| :----- | :----------- | :----------------------------------------------- | :------ |
+| `GET`  | `/dashboard` | Retrieve chart data & summary stats for Admin UI | `ADMIN` |
 
 ---
 
@@ -77,6 +79,14 @@ Test the endpoints using the following pre-configured user credentials:
 Follow these steps to run the project locally on your machine:
 
 ### 1. Clone the repository
-```bash
-git clone [https://github.com/aayasIbrahim/docter-tracker-backend.git](https://github.com/aayasIbrahim/docter-tracker-backend.git)
-cd doctor-tracker-backend
+
+### 🚀 Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/aayasIbrahim/docter-tracker-backend.git
+   ```
+2. **Navigate to the project directory:**
+   ```bash
+   cd docter-tracker-backend
+   ```
