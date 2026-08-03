@@ -11,5 +11,14 @@ router.delete("/:id", auth("ADMIN"), doctorController.deleteDoctor);
 
 //Doctor-Patient Nested Routes
 router.get("/:id/patients", auth("ADMIN"), doctorController.getDoctorPatients);
-router.post("/:id/patients", auth("ADMIN"), doctorController.addPatientUnderDoctor);
+router.post(
+  "/:id/patients",
+  auth("ADMIN"),
+  doctorController.addPatientUnderDoctor,
+);
+router.delete(
+  "/:doctorId/patients/:patientId",
+  auth("ADMIN"),
+  doctorController.removePatientFromDoctor,
+);
 export const doctorRoutes = router;

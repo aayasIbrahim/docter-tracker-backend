@@ -1,9 +1,8 @@
-import * as mongoose from "mongoose";
 import { IDoctor, IDoctorQuery } from "./doctor.interface";
 import Doctor from "./doctor.model";
-import { doctorController } from "./doctor.controller";
+import Patient from "../patient/patient.model";
 import { IPatient } from "../patient/patient.interface";
-import patientModel from "../patient/patient.model";
+// import patientModel from "../patient/patient.model";
 
 const createDoctorIntoDB = async (payload: IDoctor) => {
   const { name, specialization, hospital, phone, email } = payload;
@@ -113,7 +112,7 @@ const deleteDoctorIntoDB = async (doctorId: string) => {
   const deleteDoctor = await Doctor.findOneAndDelete({ _id: doctorId } as any);
   return deleteDoctor;
 };
-
+//service Layer of Doctor-Patient Nested Routes
 const addPatientUnderDoctor = async (
   doctorId: string,
   payload: Omit<IPatient, "doctorId">,
@@ -123,7 +122,7 @@ const addPatientUnderDoctor = async (
   if (!isDoctorExist) {
     throw new Error("Doctor not found with the provided ID!");
   }
-  const newPatient = await patientModel.create({
+  const newPatient = await Patient.create({
     ...payload,
     doctorId: doctorId,
   });
@@ -144,7 +143,7 @@ const getDoctorPatientsIntoDB = async (doctorId: string) => {
     throw new Error("Doctor not found with the provided ID!");
   }
 
-  const patients = await patientModel
+  const patients = await Patient
     .find({ doctorId: doctorId } as any)
     // .populate({
     //   path: "doctorId",
@@ -163,6 +162,29 @@ const getDoctorPatientsIntoDB = async (doctorId: string) => {
     patients: patients,
   };
 };
+//soft delete remove Patient
+const removePatientFromDoctorInDB = async (
+  doctorId: string,
+  patientId: string,
+) => {
+  const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
+  if (!isDoctorExist) {
+    throw new Error("Doctor not found!");
+  }
+
+  const unassignedPatient = await Patient.findOneAndUpdate(
+    { _id: patientId, doctorId: doctorId } as any,
+    { $unset: { doctorId: 1 } }, // doctorId set to null
+    // { new: true , lean: true},
+     { returnDocument: 'after',lean: true }
+  );
+
+  if (!unassignedPatient) {
+    throw new Error("Patient not found under this specific doctor!");
+  }
+
+  return unassignedPatient;
+};
 export const doctorService = {
   createDoctorIntoDB,
   getAllDoctorFromDB,
@@ -171,4 +193,5 @@ export const doctorService = {
   deleteDoctorIntoDB,
   getDoctorPatientsIntoDB,
   addPatientUnderDoctor,
+  removePatientFromDoctorInDB,
 };

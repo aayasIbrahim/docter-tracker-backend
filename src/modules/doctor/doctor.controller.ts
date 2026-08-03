@@ -70,6 +70,9 @@ const deleteDoctor = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
+//Controller layer to Doctor-Patient Nested Routes
+
 const getDoctorPatients = catchAsync(async (req: Request, res: Response) => {
   const { id: doctorId } = req.params;
   if (!doctorId) {
@@ -105,6 +108,28 @@ const addPatientUnderDoctor = catchAsync(
     });
   },
 );
+
+const removePatientFromDoctor = catchAsync(
+  async (req: Request, res: Response) => {
+    const { doctorId, patientId } = req.params;
+
+    if (!doctorId && !patientId) {
+      throw new Error("Doctor Id & Patient Id Required In Params");
+    }
+    const result = await doctorService.removePatientFromDoctorInDB(
+      doctorId as string,
+      patientId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Patient successfully removed from doctor list!",
+      data: result,
+    });
+  },
+);
+
 export const doctorController = {
   createDoctor,
   getAllDoctor,
@@ -113,4 +138,5 @@ export const doctorController = {
   deleteDoctor,
   getDoctorPatients,
   addPatientUnderDoctor,
+  removePatientFromDoctor,
 };

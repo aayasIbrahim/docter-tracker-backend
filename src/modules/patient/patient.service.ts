@@ -17,6 +17,7 @@ const getAllPatientsFromDB = async (q: IPatientQuery) => {
       $or: [
         { name: { $regex: q.searchTerm, $options: "i" } },
         { phone: { $regex: q.searchTerm, $options: "i" } },
+        { condition: { $regex: q.searchTerm, $options: "i" } },
       ],
     });
   }
