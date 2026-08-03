@@ -40,6 +40,23 @@ const getAllDoctorFromDB = async (q: IDoctorQuery) => {
       specialization: { $regex: q.specialization, $options: "i" },
     });
   }
+  //date filter
+  if (q.startDate && q.endDate) {
+    andConditions.push({
+      createdAt: {
+        $gte: new Date(q.startDate), // From Start Date
+        $lte: new Date(q.endDate), // To End Date
+      },
+    });
+  } else if (q.startDate) {
+    andConditions.push({
+      createdAt: { $gte: new Date(q.startDate) },
+    });
+  } else if (q.endDate) {
+    andConditions.push({
+      createdAt: { $lte: new Date(q.endDate) },
+    });
+  }
   const whereConditions =
     andConditions.length > 0 ? ({ $and: andConditions } as any) : {};
 
@@ -72,7 +89,7 @@ const updateDoctorIntoDB = async (
   const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
 
   if (!isDoctorExist) {
-   throw new Error(" Doctor Not found! ");
+    throw new Error(" Doctor Not found! ");
   }
   const updatedDoctor = await Doctor.findOneAndUpdate(
     { _id: doctorId } as any,
@@ -102,7 +119,7 @@ const addPatientUnderDoctor = async (
   payload: Omit<IPatient, "doctorId">,
 ) => {
   const isDoctorExist = await Doctor.findOne({ _id: doctorId } as any);
-  
+
   if (!isDoctorExist) {
     throw new Error("Doctor not found with the provided ID!");
   }
@@ -115,7 +132,7 @@ const addPatientUnderDoctor = async (
   }
   const populatedPatient = await newPatient.populate({
     path: "doctorId",
-   select: "name specialization hospital email ",
+    select: "name specialization hospital email ",
   });
 
   return populatedPatient;

@@ -2,11 +2,11 @@ import Doctor from '../doctor/doctor.model';
 import Patient from '../patient/patient.model';
 
 const getDashboardStatsFromDB = async () => {
-  // 1. Basic Counts
+
   const totalDoctorsPromise = Doctor.countDocuments();
   const totalPatientsPromise = Patient.countDocuments();
 
-  // 2. Patients per Doctor (Group by Doctor with aggregation)
+  //  Patients per Doctor 
   const patientsPerDoctorPromise = Patient.aggregate([
     {
       $group: {
@@ -16,7 +16,7 @@ const getDashboardStatsFromDB = async () => {
     },
     {
       $lookup: {
-        from: 'doctors', // Doctor collection name in DB
+        from: 'doctors', 
         localField: '_id',
         foreignField: '_id',
         as: 'doctor',
@@ -35,7 +35,7 @@ const getDashboardStatsFromDB = async () => {
     },
   ]);
 
-  // 3. Date-based statistics (Patients registration grouped by Date/Month)
+  //  Date-based statistics 
   const dateBasedPatientsPromise = Patient.aggregate([
     {
       $group: {
@@ -45,8 +45,9 @@ const getDashboardStatsFromDB = async () => {
         count: { $sum: 1 },
       },
     },
-    { $sort: { _id: 1 } }, // Date-wise ascending sort for charts
-    { $limit: 30 }, // Last 30 days
+    { $sort: { _id:- 1 } }, 
+    { $limit: 30 },
+    { $sort: { _id: 1 } } // Last 30 days
   ]);
 
   // Execute all queries concurrently for ultra-fast performance

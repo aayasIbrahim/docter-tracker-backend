@@ -17,12 +17,33 @@ const getAllPatientsFromDB = async (q: IPatientQuery) => {
       $or: [
         { name: { $regex: q.searchTerm, $options: "i" } },
         { phone: { $regex: q.searchTerm, $options: "i" } },
-        { condition: { $regex: q.searchTerm, $options: "i" } },
       ],
     });
   }
 
-  //  Exact Filters (Gender, DoctorId)
+  //  Exact Filters (date,Gender, DoctorId)
+  if (q.condition) {
+    andConditions.push({
+      condition: { $regex: q.condition, $options: "i" },
+    });
+  }
+
+  if (q.startDate && q.endDate) {
+    andConditions.push({
+      createdAt: {
+        $gte: new Date(q.startDate),
+        $lte: new Date(q.endDate),
+      },
+    });
+  } else if (q.startDate) {
+    andConditions.push({
+      createdAt: { $gte: new Date(q.startDate) },
+    });
+  } else if (q.endDate) {
+    andConditions.push({
+      createdAt: { $lte: new Date(q.endDate) },
+    });
+  }
   if (q.gender) {
     andConditions.push({ gender: q.gender });
   }
@@ -89,10 +110,11 @@ const deletePatientIntoDB = async (patientId: string) => {
   if (!isPatientExist) {
     throw new Error(" Doctor Not found! ");
   }
-  const patientDoctor = await Patient.findOneAndDelete({ _id: patientId} as any);
+  const patientDoctor = await Patient.findOneAndDelete({
+    _id: patientId,
+  } as any);
   return patientDoctor;
 };
-
 
 export const patientService = {
   getAllPatientsFromDB,
