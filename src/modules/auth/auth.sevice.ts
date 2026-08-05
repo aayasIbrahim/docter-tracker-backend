@@ -11,7 +11,7 @@ const loginUserIntoDB = async (payload: {
   const { email, password } = payload;
 
   const user = await User.findOne({ email } as any);
-  console.log(user);
+
   if (!user) {
     throw new Error("User doest not exits");
   }

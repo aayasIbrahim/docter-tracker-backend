@@ -145,10 +145,7 @@ const getDoctorPatientsIntoDB = async (doctorId: string) => {
 
   const patients = await Patient
     .find({ doctorId: doctorId } as any)
-    // .populate({
-    //   path: "doctorId",
-    //   select: "name specialization hospital email phone",
-    // })
+   
     .sort({ createdAt: -1 });
 
   return {

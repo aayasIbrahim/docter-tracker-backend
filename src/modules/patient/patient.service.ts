@@ -2,7 +2,7 @@ import { IPatient, IPatientQuery } from "./patient.interface";
 import Patient from "./patient.model";
 
 const getAllPatientsFromDB = async (q: IPatientQuery) => {
-  const limit = q.limit ? Number(q.limit) : 10;
+  const limit = q.limit ? Number(q.limit) : 5;
   const page = q.page ? Number(q.page) : 1;
   const skip = (page - 1) * limit;
 

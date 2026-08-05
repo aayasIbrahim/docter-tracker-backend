@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { TUser } from "./user.interface";
 const registerUserIntoDB = async (payload: TUser) => {
   const { name, email, password, role } = payload;
+  
   const existingUser = await User.findOne({ email } as any);
   if (existingUser) {
     throw new Error("User with this email already exists");
@@ -29,7 +30,7 @@ const registerUserIntoDB = async (payload: TUser) => {
 const getMyProfileIntoDB = async (userId: string) => {
   const user = await User.findOne({ _id: userId } as any);
   const { password: _, ...userWithoutPassword } = user.toObject();
-  console.log(userWithoutPassword);
+  
 
   return userWithoutPassword;
 };
