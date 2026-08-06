@@ -36,7 +36,7 @@ const DoctorSchema = new mongoose.Schema(
   }
 );
 
-// Search optimization: Name & Hospital Text Index
+
 DoctorSchema.index({ name: 'text', hospital: 'text' });
 
 export default mongoose.models.Doctor || mongoose.model('Doctor', DoctorSchema);

@@ -2,6 +2,7 @@ import { IDoctor, IDoctorQuery } from "./doctor.interface";
 import Doctor from "./doctor.model";
 import Patient from "../patient/patient.model";
 import { IPatient } from "../patient/patient.interface";
+import { isValidDate } from "../../utils/getValidDate";
 // import patientModel from "../patient/patient.model";
 
 const createDoctorIntoDB = async (payload: IDoctor) => {
@@ -40,22 +41,28 @@ const getAllDoctorFromDB = async (q: IDoctorQuery) => {
     });
   }
   //date filter
-  if (q.startDate && q.endDate) {
-    andConditions.push({
-      createdAt: {
-        $gte: new Date(q.startDate), // From Start Date
-        $lte: new Date(q.endDate), // To End Date
-      },
-    });
-  } else if (q.startDate) {
-    andConditions.push({
-      createdAt: { $gte: new Date(q.startDate) },
-    });
-  } else if (q.endDate) {
-    andConditions.push({
-      createdAt: { $lte: new Date(q.endDate) },
-    });
-  }
+   const hasValidStart = isValidDate(q.startDate);
+    const hasValidEnd = isValidDate(q.endDate);
+  
+    if (hasValidStart || hasValidEnd) {
+      const dateQuery: Record<string, any> = {};
+  
+      if (hasValidStart) {
+        const startDate = new Date(q.startDate!);
+        startDate.setHours(0, 0, 0, 0);
+        dateQuery.$gte = startDate;
+      }
+  
+      if (hasValidEnd) {
+        const endDate = new Date(q.endDate!);
+        endDate.setHours(23, 59, 59, 999);
+        dateQuery.$lte = endDate;
+      }
+  
+      andConditions.push({ createdAt: dateQuery });
+    }
+
+    
   const whereConditions =
     andConditions.length > 0 ? ({ $and: andConditions } as any) : {};
 

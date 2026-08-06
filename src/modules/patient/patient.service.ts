@@ -1,3 +1,4 @@
+import { isValidDate } from "../../utils/getValidDate";
 import { IPatient, IPatientQuery } from "./patient.interface";
 import Patient from "./patient.model";
 
@@ -9,7 +10,7 @@ const getAllPatientsFromDB = async (q: IPatientQuery) => {
   const sortBy = q.sortBy ? q.sortBy : "createdAt";
   const sortOrder = q.sortOrder === "asc" ? 1 : -1;
 
-  const andConditions: any[] = [];
+  const andConditions: Record<string, any>[] = [];
 
   //  Search (Name, Phone, Condition)
   if (q.searchTerm) {
@@ -29,27 +30,25 @@ const getAllPatientsFromDB = async (q: IPatientQuery) => {
     });
   }
 
-  if (q.startDate && q.endDate) {
-    const endOfDay = new Date(q.endDate);
-    endOfDay.setHours(23, 59, 59, 999);
+  const hasValidStart = isValidDate(q.startDate);
+  const hasValidEnd = isValidDate(q.endDate);
 
-    andConditions.push({
-      createdAt: {
-        $gte: new Date(q.startDate),
-        $lte: endOfDay,
-      },
-    });
-  } else if (q.startDate) {
-    andConditions.push({
-      createdAt: { $gte: new Date(q.startDate) },
-    });
-  } else if (q.endDate) {
-    const endOfDay = new Date(q.endDate);
-    endOfDay.setHours(23, 59, 59, 999);
+  if (hasValidStart || hasValidEnd) {
+    const dateQuery: Record<string, any> = {};
 
-    andConditions.push({
-      createdAt: { $lte: endOfDay },
-    });
+    if (hasValidStart) {
+      const startDate = new Date(q.startDate!);
+      startDate.setHours(0, 0, 0, 0);
+      dateQuery.$gte = startDate;
+    }
+
+    if (hasValidEnd) {
+      const endDate = new Date(q.endDate!);
+      endDate.setHours(23, 59, 59, 999);
+      dateQuery.$lte = endDate;
+    }
+
+    andConditions.push({ createdAt: dateQuery });
   }
   if (q.gender) {
     andConditions.push({ gender: q.gender });
