@@ -30,10 +30,13 @@ const getAllPatientsFromDB = async (q: IPatientQuery) => {
   }
 
   if (q.startDate && q.endDate) {
+    const endOfDay = new Date(q.endDate);
+    endOfDay.setHours(23, 59, 59, 999);
+
     andConditions.push({
       createdAt: {
         $gte: new Date(q.startDate),
-        $lte: new Date(q.endDate),
+        $lte: endOfDay,
       },
     });
   } else if (q.startDate) {
@@ -41,8 +44,11 @@ const getAllPatientsFromDB = async (q: IPatientQuery) => {
       createdAt: { $gte: new Date(q.startDate) },
     });
   } else if (q.endDate) {
+    const endOfDay = new Date(q.endDate);
+    endOfDay.setHours(23, 59, 59, 999);
+
     andConditions.push({
-      createdAt: { $lte: new Date(q.endDate) },
+      createdAt: { $lte: endOfDay },
     });
   }
   if (q.gender) {
@@ -109,7 +115,7 @@ const deletePatientIntoDB = async (patientId: string) => {
   const isPatientExist = await Patient.findOne({ _id: patientId } as any);
 
   if (!isPatientExist) {
-    throw new Error(" Doctor Not found! ");
+    throw new Error("Patients Not found! ");
   }
   const patientDoctor = await Patient.findOneAndDelete({
     _id: patientId,
