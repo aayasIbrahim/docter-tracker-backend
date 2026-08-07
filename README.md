@@ -7,7 +7,7 @@ A robust, scalable, and fully typed RESTful API backend for managing doctors, pa
 ## 🚀 Live Demo & API Documentation
 
 - **Base URL:** `https://doctor-tracker-app.vercel.app`
-- **Postman Collection:** [Download / View Collection](https://github.com/aayasIbrahim/docter-tracker-backend/blob/master/postman/Docter%20app.postman_collection.json)
+- **Postman Collection:** [Download / View Collection](https://github.com/aayasIbrahim/docter-tracker-backend/blob/master/Docter.postman_collection.json)
 
 ---
 
