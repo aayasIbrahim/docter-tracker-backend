@@ -6,7 +6,7 @@ A robust, scalable, and fully typed RESTful API backend for managing doctors, pa
 
 ## 🚀 Live Demo & API Documentation
 
-- **Base URL:** `https://your-api-domain.com/api/v1`
+- **Base URL:** `https://doctor-tracker-app.vercel.app`
 - **Postman Collection:** [Download / View Collection](https://github.com/aayasIbrahim/docter-tracker-backend/blob/master/postman/Docter%20app.postman_collection.json)
 
 ---
@@ -39,7 +39,7 @@ Test the endpoints using the following pre-configured user credentials:
 
 | Role             | Email              | Password | Access Rights                              |
 | :--------------- | :----------------- | :------- | :----------------------------------------- |
-| **System Admin** | `admin1@gmail.com` | `12345`  | Full Access (CRUD Doctors/Patients, Stats) |
+| **System Admin** | `admin@gmail.com` | `12345`  | Full Access (CRUD Doctors/Patients, Stats) |
 
 ---
 
