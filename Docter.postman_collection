@@ -146,6 +146,14 @@
           "response": []
         },
         {
+          "name": "removeFormPatientsUnderdoctor",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
           "name": "getDoctorPatients",
           "request": {
             "method": "GET",
@@ -183,7 +191,15 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "delete patients",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "delete Patients",
           "request": {
             "method": "GET",
             "header": []
